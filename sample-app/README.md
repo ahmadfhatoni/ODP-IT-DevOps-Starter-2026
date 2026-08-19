@@ -1,10 +1,21 @@
-# Banking DevOps Demo App
+# JakOne Account Service — DevOps Fallback Mock
 
-Minimal dependency-free Node.js application used by the facilitator to demonstrate CI, Docker, health checks, logs, and deployment.
+This is **not a replacement for the Backend module implementation**.
 
-All banking data is fictional demo data.
+It is a dependency-free fallback/mock for the facilitator to demonstrate Day 7 DevOps mechanics using the same endpoint names as the shared JakOne example.
 
-## Run Locally
+## Functions
+
+```text
+POST /api/v1/accounts
+GET  /api/v1/accounts/{accountNumber}
+POST /api/v1/accounts/{accountNumber}/transact
+GET  /api/v1/accounts/{accountNumber}/mutations
+GET  /health
+```
+
+## Local Run
+
 ```bash
 npm ci
 npm test
@@ -12,25 +23,25 @@ npm run build
 npm start
 ```
 
-Endpoints:
-- http://localhost:3000/
-- http://localhost:3000/health
-- http://localhost:3000/api/accounts
-- http://localhost:3000/api/transactions
+Default port: `8080`.
 
 ## Docker
+
 ```bash
-docker build -t banking-devops-demo:v1 .
-docker run -d --name banking-devops-demo -p 3000:3000 banking-devops-demo:v1
-curl http://localhost:3000/health
-docker logs banking-devops-demo
+docker build -t jakone-devops-mock:day7 .
+docker run -d --name jakone-devops-mock -p 8080:8080 jakone-devops-mock:day7
+curl http://localhost:8080/health
+docker logs jakone-devops-mock
 ```
 
-## Compose
+## Example Create Account
+
 ```bash
-docker compose up -d --build
-docker compose ps
-curl http://localhost:3000/health
-docker compose logs
-docker compose down
+curl -X POST http://localhost:8080/api/v1/accounts   -H 'Content-Type: application/json'   -d '{"customerNik":"3171012345670099","customerName":"ODP Demo User","initialBalance":750000}'
 ```
+
+Use the returned account number for the remaining calls.
+
+## Important
+
+During the real workshop, prefer the group's actual backend from the earlier module. Use this mock only if the shared backend is temporarily unavailable or for a fast instructor demonstration.

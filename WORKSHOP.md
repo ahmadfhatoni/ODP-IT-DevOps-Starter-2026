@@ -1,179 +1,265 @@
 # Day 7 Workshop Guide
+## Integration & DevOps — Shared JakOne Example
 
 ## Mission
-Apply CI/CD and deployment practices directly to your group's existing project and finish the day with a deployed, verified, demo-ready prototype.
 
-## Activity 1 — Baseline Your Project
+Take the **same JakOne project** developed in the Backend/Database and Frontend modules and make it repeatably buildable, testable, deployable, and verifiable.
+
+---
+
+## Activity 1 — Establish the Deployment Baseline
 
 Record:
+
 ```text
 Project name:
-Project type: web / backend / full-stack / mobile / other
-Technology stack:
-Repository URL:
-Build command:
-Test/check command:
-Run command:
-Application port:
-Deployment artifact:
+Backend technology:
+Frontend technology:
+Database:
+Repository:
+Backend build command:
+Backend test/check command:
+Frontend build command (if applicable):
+Application ports:
 Environment variables:
-Target deployment environment:
+Deployment artifact:
+Target environment:
 ```
 
-Create a safe working branch if your team workflow allows it:
-```bash
-git checkout -b day7-devops
-git status
-git add .
-git commit -m "chore: Day 7 deployment baseline"
-git push -u origin day7-devops
-```
+Confirm the shared functions are present:
 
-**Checkpoint 1:** application still runs locally.
+- create account
+- get account
+- deposit / withdraw
+- get mutations
 
-## Activity 2 — Design Your CI/CD Flow
-Draw the minimum delivery path:
+**Checkpoint 1:** project works before DevOps changes.
 
-```text
-Code → Build → Test/Check → Package → Deploy → Verify
-```
+---
 
-Use [docs/cicd-overview.md](docs/cicd-overview.md).
+## Activity 2 — Map the Delivery Pipeline
 
-## Activity 3 — Implement Continuous Integration
-Create `.github/workflows/ci.yml`.
-
-Use [`templates/ci-node.yml`](templates/ci-node.yml), [`templates/ci-spring.yml`](templates/ci-spring.yml), or adapt the generic logic to your stack.
-
-Minimum target:
-```text
-Push / Pull Request
-        ↓
-Checkout
-        ↓
-Setup Runtime
-        ↓
-Install/Restore
-        ↓
-Test / Check
-        ↓
-Build
-        ↓
-PASS / FAIL
-```
-
-**Checkpoint 2:** successful CI run visible in GitHub Actions.
-
-## Activity 4 — Experience a CI Failure
-Intentionally make a safe change that causes a build/test/check failure. Observe the failed job, fix it, push again, and obtain a green run.
-
-**Checkpoint 3:** group can explain why CI failed and how it was fixed.
-
-## Activity 5 — Prepare a Deployable Artifact
-
-### Web / Backend / Full-Stack
-Use:
-- [`templates/Dockerfile.node`](templates/Dockerfile.node)
-- [`templates/Dockerfile.spring`](templates/Dockerfile.spring)
-
-Typical flow:
-```bash
-docker build -t group-project:v1 .
-docker run -d --name group-project -p <host-port>:<app-port> group-project:v1
-docker ps
-docker logs group-project
-```
-
-### Mobile
-Produce the platform-appropriate artifact, e.g. APK/AAB for Android. See [docs/mobile-cicd-example.md](docs/mobile-cicd-example.md).
-
-**Checkpoint 4:** deployable artifact can be produced.
-
-## Activity 6 — Environment & Configuration
-Identify values that vary by environment, such as `APP_ENV`, `PORT`, `API_URL`, and `DATABASE_URL`.
-
-Create `.env.example` as documentation. Do **not** commit real passwords, tokens, API keys, or production credentials.
-
-## Activity 7 — Run with Docker Compose (Where Applicable)
-Adapt [`templates/compose.yaml`](templates/compose.yaml).
-
-```bash
-docker compose up -d --build
-docker compose ps
-docker compose logs
-docker compose down
-```
-
-**Checkpoint 5:** application starts repeatably from deployment configuration.
-
-## Activity 8 — Publish the Artifact
-For Docker-based projects:
-
-```bash
-docker login
-docker tag group-project:v1 <username>/group-project:v1
-docker push <username>/group-project:v1
-docker pull <username>/group-project:v1
-```
-
-## Activity 9 — Extend CI Toward Delivery
-Reference the instructor demonstration and [`instructor/solutions/docker-publish.yml`](instructor/solutions/docker-publish.yml).
+Design:
 
 ```text
 Push
  ↓
-Build + Test
+Build
+ ↓
+Automated Checks
  ↓
 Package
+ ↓
+Deploy
+ ↓
+Runtime Health
+ ↓
+API Smoke Test
+```
+
+Define which failures must stop promotion.
+
+---
+
+## Activity 3 — Implement CI
+
+Create or adapt:
+
+```text
+.github/workflows/ci.yml
+```
+
+Minimum:
+
+```text
+Checkout
+  ↓
+Setup runtime
+  ↓
+Restore/install dependencies
+  ↓
+Test / validation
+  ↓
+Build
+```
+
+**Checkpoint 2:** successful GitHub Actions run.
+
+---
+
+## Activity 4 — Experience a CI Failure
+
+Introduce a safe, intentional build/test failure.
+
+Observe that CI blocks progression.
+
+Fix the issue and obtain a green pipeline.
+
+**Checkpoint 3:** group can explain cause and resolution.
+
+---
+
+## Activity 5 — Containerize the Shared Application
+
+For backend/web components where Docker is appropriate:
+
+```text
+Backend
+  ↓
+Dockerfile
+  ↓
+Docker Image
+```
+
+If the group's backend from the earlier module already contains a Dockerfile, **review and improve it rather than replacing it unnecessarily**.
+
+Build and run:
+
+```bash
+docker build -t jakone-backend:day7 .
+docker run ...
+docker ps
+docker logs <container>
+```
+
+---
+
+## Activity 6 — Environment & Configuration
+
+Identify configuration that must not be hard-coded:
+
+```text
+APP_ENV
+SERVER_PORT
+DATABASE_HOST
+DATABASE_PORT
+DATABASE_NAME
+DATABASE_USER
+DATABASE_PASSWORD
+FRONTEND/API_BASE_URL
+```
+
+Keep real secrets out of Git.
+
+Document safe placeholders in `.env.example`.
+
+---
+
+## Activity 7 — Compose the Runtime
+
+For the shared backend/database example:
+
+```text
+Docker Compose
+├── backend
+└── postgres
+```
+
+Where the frontend is containerized:
+
+```text
+Docker Compose
+├── frontend
+├── backend
+└── postgres
+```
+
+Important: within a Compose network, a service should connect to another service using the service name rather than assuming `localhost`.
+
+**Checkpoint 4:** application and database start consistently.
+
+---
+
+## Activity 8 — Extend CI Toward Delivery
+
+After CI passes:
+
+```text
+CI
+ ↓
+Docker Build / Artifact Build
  ↓
 Registry / Distribution
  ↓
 Deploy
- ↓
-Verify
 ```
 
-Do not place passwords or tokens directly in workflow YAML.
+Use GitHub Secrets/Variables for sensitive or environment-specific pipeline configuration.
 
-## Activity 10 — Deploy & Verify Your Prototype
-Verification may include:
-- browser smoke test;
-- API response;
-- `/health` endpoint;
-- container/process status;
-- logs;
-- mobile build installation/test.
+---
+
+## Activity 9 — Post-Deployment Verification
+
+Do not stop after `docker ps`.
+
+Perform:
+
+### Runtime check
 
 ```text
-Build ✓
-Test ✓
-Deploy ✓
-Health/Functional Verification ✗
-
-= release is NOT considered successful
+GET /health
 ```
 
-## Activity 11 — Troubleshoot
-Use [docs/troubleshooting.md](docs/troubleshooting.md) and complete at least one challenge in [`challenges/`](challenges/).
+### Business smoke test
 
-Your group should answer:
-1. What failed?
-2. Where did you look for evidence?
-3. What was the root cause?
-4. What change fixed it?
-5. How would you prevent recurrence?
+```text
+Create Account
+      ↓
+Get Account
+      ↓
+Deposit / Withdraw
+      ↓
+Get Mutations
+```
 
-## Activity 12 — Demo Freeze & Final Demonstration
-Stop adding features before the demo. Stabilize the deployed version.
+Use [docs/api-smoke-test.md](docs/api-smoke-test.md).
 
-Each group demonstrates:
-1. project prototype;
-2. GitHub repository;
+**Checkpoint 5:** deployed service is both runtime-healthy and functionally healthy.
+
+---
+
+## Activity 10 — Troubleshoot
+
+Investigate one controlled failure using:
+
+```bash
+docker ps
+docker ps -a
+docker logs <container>
+docker compose logs
+docker inspect <container>
+curl -i <endpoint>
+```
+
+Suggested failures:
+
+- wrong published port;
+- backend cannot reach database;
+- missing environment variable;
+- incorrect image tag;
+- health endpoint wrong;
+- runtime healthy but banking smoke test fails.
+
+---
+
+## Activity 11 — Demo Freeze
+
+Stop adding features before the final demo.
+
+Stabilize the release and collect evidence.
+
+---
+
+## Final Group Demo
+
+Each group shows:
+
+1. shared JakOne prototype;
+2. repository;
 3. successful CI run;
-4. deployable artifact;
-5. running/deployed prototype;
-6. verification evidence;
-7. logs/operational evidence; and
-8. one deployment problem and its resolution.
-
-Complete [GROUP-CHECKLIST.md](GROUP-CHECKLIST.md) before presenting.
+4. deployable artifact/container;
+5. running deployment;
+6. `/health`;
+7. one business API smoke-test path;
+8. logs/troubleshooting evidence; and
+9. one issue encountered and how it was resolved.
