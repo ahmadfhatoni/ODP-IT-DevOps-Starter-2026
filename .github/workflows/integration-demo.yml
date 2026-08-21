@@ -2,6 +2,16 @@ name: Full Stack Integration Demo
 
 on:
   workflow_dispatch:
+  
+  push:
+    branches:
+      - feat/fallback-fe-mobile
+    paths:
+      - "apps/frontend/**"
+      - "compose/**"
+      - "scripts/**"
+      - "shared-contract/**"
+      - ".github/workflows/integration-demo.yml"
 
 jobs:
   integration:
