@@ -31,3 +31,5 @@ jobs:
       - name: Frontend logs on failure
         if: failure()
         run: docker compose -f compose/docker-compose.full-demo.yml logs frontend --tail=100
+
+# Trigger full-stack rehearsal
