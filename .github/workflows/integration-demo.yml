@@ -1,0 +1,23 @@
+name: Full Stack Integration Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start backend + DB + fallback web
+        run: docker compose -f compose/docker-compose.full-demo.yml up -d --build
+      - name: Wait and run banking smoke test
+        run: bash scripts/wait-and-smoke.sh
+      - name: Show service state
+        if: always()
+        run: docker compose -f compose/docker-compose.full-demo.yml ps -a
+      - name: Backend logs on failure
+        if: failure()
+        run: docker compose -f compose/docker-compose.full-demo.yml logs backend --tail=150
+      - name: Frontend logs on failure
+        if: failure()
+        run: docker compose -f compose/docker-compose.full-demo.yml logs frontend --tail=100

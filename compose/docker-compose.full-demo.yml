@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: odp-jakone-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bank_dki_db}
+      POSTGRES_USER: ${POSTGRES_USER:-dev_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - odp_pgdata:/var/lib/postgresql/data
+      - ../shared-contract/db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dev_user} -d ${POSTGRES_DB:-bank_dki_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [odp-network]
+
+  backend:
+    image: ${BACKEND_IMAGE:-bagzmate/jakone-be}:${JAKONE_VERSION:-latest}
+    container_name: odp-jakone-backend
+    pull_policy: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-bank_dki_db}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-dev_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-dev_password}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [odp-network]
+
+  frontend:
+    build:
+      context: ../apps/frontend
+    container_name: odp-jakone-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks: [odp-network]
+
+networks:
+  odp-network:
+    driver: bridge
+volumes:
+  odp_pgdata:

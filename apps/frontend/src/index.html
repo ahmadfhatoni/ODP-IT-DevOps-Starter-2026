@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JakOne Day 7 Fallback Web</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">ODP IT • Day 7 • Integration & DevOps</p>
+      <h1>JakOne Fallback Web Client</h1>
+      <p>Minimal frontend for CI/CD, deployment and smoke-test demonstrations. Replace this folder when the official frontend arrives.</p>
+    </header>
+
+    <section class="card">
+      <h2>1. Runtime health</h2>
+      <button id="healthBtn">Check Backend Health</button>
+    </section>
+
+    <section class="card">
+      <h2>2. Account</h2>
+      <label>Account number <input id="accountNumber" value="DKI-1029384" /></label>
+      <button id="getAccountBtn">Get Account</button>
+      <button id="mutationsBtn">Get Mutations</button>
+    </section>
+
+    <section class="card">
+      <h2>3. Create account</h2>
+      <label>NIK <input id="nik" value="3171012345678901" maxlength="16" /></label>
+      <label>Name <input id="customerName" value="ODP Demo User" /></label>
+      <label>Initial balance <input id="initialBalance" type="number" value="500000" /></label>
+      <button id="createBtn">Create Account</button>
+    </section>
+
+    <section class="card">
+      <h2>4. Transaction</h2>
+      <label>Type
+        <select id="txType"><option>DEPOSIT</option><option>WITHDRAWAL</option></select>
+      </label>
+      <label>Channel
+        <select id="channel"><option>TRANSFER</option><option>CASH</option><option>QRIS</option></select>
+      </label>
+      <label>Amount <input id="amount" type="number" value="50000" /></label>
+      <button id="transactBtn">Submit Transaction</button>
+    </section>
+
+    <section class="card output-card">
+      <div class="output-head"><h2>Response</h2><button id="clearBtn" class="secondary">Clear</button></div>
+      <pre id="output">Ready.</pre>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

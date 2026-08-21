@@ -1,0 +1,22 @@
+name: Frontend CI Demo
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'apps/frontend/**'
+      - 'scripts/frontend-ci.sh'
+      - '.github/workflows/frontend-ci.yml'
+
+jobs:
+  frontend-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Frontend test/build
+        run: bash scripts/frontend-ci.sh
+      - name: Build container
+        run: docker build -t jakone-frontend:${{ github.sha }} apps/frontend
