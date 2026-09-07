@@ -1,2 +1,5 @@
 .env
 .DS_Store
+
+# Generated build output
+sample-app/dist/
