@@ -16,7 +16,7 @@ POST /api/v1/accounts
 GET  /api/v1/accounts/{accountNumber}
 POST /api/v1/accounts/{accountNumber}/transact
 GET  /api/v1/accounts/{accountNumber}/mutations
-GET  /health                         # Day 7 verification endpoint
+GET  /api/v1/health                         # Day 7 verification endpoint
 ```
 
 ## Account Model Used for DevOps Examples

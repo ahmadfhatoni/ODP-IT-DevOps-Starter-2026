@@ -19,7 +19,7 @@ docker compose ps
 docker compose logs
 docker compose down
 
-curl http://localhost:3000/health
+curl http://localhost:8080/api/v1/health
 ```
 
 ## Remember

@@ -8,7 +8,7 @@ The `sample-app/` is a demonstration and fallback environment. The participant's
 3. Intentionally break a test and show CI stopping.
 4. Restore the test.
 5. Build the Docker image.
-6. Run the container and verify `/health`.
+6. Run the container and verify `/api/v1/health`.
 7. Show logs.
 8. Demonstrate Docker Hub publishing.
 9. Demonstrate a controlled deployment failure.

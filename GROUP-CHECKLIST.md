@@ -28,7 +28,7 @@
 - [ ] Deployment is repeatable.
 
 ## Verification
-- [ ] `/health` or equivalent runtime check passes.
+- [ ] `/api/v1/health` or equivalent runtime check passes.
 - [ ] Create-account smoke test passes.
 - [ ] Get-account smoke test passes.
 - [ ] Transaction smoke test passes.

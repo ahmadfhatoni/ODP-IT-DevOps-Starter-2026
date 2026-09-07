@@ -27,7 +27,7 @@ GET  /api/v1/accounts/{accountNumber}/mutations
 For DevOps verification we add:
 
 ```text
-GET /health
+GET /api/v1/health
 ```
 
 The DevOps session does **not** redesign the backend. It takes the shared application produced in earlier modules and makes it **buildable, testable, packageable, deployable, and verifiable**.

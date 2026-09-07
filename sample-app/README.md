@@ -11,7 +11,7 @@ POST /api/v1/accounts
 GET  /api/v1/accounts/{accountNumber}
 POST /api/v1/accounts/{accountNumber}/transact
 GET  /api/v1/accounts/{accountNumber}/mutations
-GET  /health
+GET  /api/v1/health
 ```
 
 ## Local Run
@@ -30,7 +30,7 @@ Default port: `8080`.
 ```bash
 docker build -t jakone-devops-mock:day7 .
 docker run -d --name jakone-devops-mock -p 8080:8080 jakone-devops-mock:day7
-curl http://localhost:8080/health
+curl http://localhost:8080/api/v1/health
 docker logs jakone-devops-mock
 ```
 

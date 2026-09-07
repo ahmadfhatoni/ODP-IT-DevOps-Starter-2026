@@ -37,7 +37,7 @@ function publicAccount(a) {
 
 async function handler(req,res) {
   const u = new URL(req.url,'http://localhost');
-  if (req.method==='GET' && u.pathname==='/health')
+  if (req.method==='GET' && ['/api/v1/health','/health'].includes(u.pathname))
     return send(res,200,{status:'UP',service:'jakone-account-service-mock',environment:process.env.APP_ENV||'development'});
 
   if (req.method==='POST' && u.pathname==='/api/v1/accounts') {

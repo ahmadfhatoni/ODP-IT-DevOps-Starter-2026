@@ -9,7 +9,7 @@ Day 7 verifies two levels:
 Example:
 
 ```bash
-curl -i "$BASE_URL/health"
+curl -i "$BASE_URL/api/v1/health"
 ```
 
 Expected: a successful HTTP response indicating the service is running.
@@ -76,7 +76,7 @@ Confirm that the transaction ledger reflects the test operations.
 
 ```text
 Container running       ✓
-/health                 ✓
+/api/v1/health          ✓
 Create account          ✓
 Get account             ✓
 Deposit / withdrawal    ✓
@@ -85,6 +85,6 @@ Mutation retrieval      ✓
 Release verification    PASS
 ```
 
-If `/health` passes but a core API scenario fails, treat the release as **functionally unhealthy** and investigate before promotion/demo.
+If `/api/v1/health` passes but a core API scenario fails, treat the release as **functionally unhealthy** and investigate before promotion/demo.
 
 > Note: request-field names for transaction operations should follow the final Backend module implementation. The DevOps module should consume that contract rather than redefine it.

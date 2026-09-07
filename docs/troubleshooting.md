@@ -17,7 +17,7 @@ docker compose logs
 
 ## Verify
 ```bash
-curl -i http://localhost:3000/health
+curl -i http://localhost:8080/api/v1/health
 docker inspect <container>
 ```
 
