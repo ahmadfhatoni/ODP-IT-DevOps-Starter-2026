@@ -19,7 +19,7 @@ services:
     networks: [odp-network]
 
   backend:
-    image: ${BACKEND_IMAGE:-bagzmate/jakone-be}:${JAKONE_VERSION:-latest}
+    image: ${BACKEND_IMAGE:-bagzmate/jakone-be}:${JAKONE_VERSION:-day7-2026-09-09}
     container_name: odp-jakone-backend
     pull_policy: always
     ports:

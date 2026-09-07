@@ -10,7 +10,7 @@ This revision aligns Day 7 with the Backend/Database module example.
   - get single account;
   - transact (deposit/withdraw);
   - get mutations.
-- `/health` retained as the Day 7 DevOps-specific runtime verification endpoint.
+- `/api/v1/health` is the canonical Day 7 runtime verification endpoint.
 - Workshop flow now verifies both runtime health and banking business functions.
 - Group checklist now includes API smoke testing.
 - Added `docs/shared-application.md`.

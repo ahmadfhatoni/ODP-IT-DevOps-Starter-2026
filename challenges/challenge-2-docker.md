@@ -12,7 +12,7 @@
 docker ps
 docker logs <container>
 docker inspect <container>
-curl -i http://localhost:<port>/health
+curl -i http://localhost:<port>/api/v1/health
 ```
 
 Correct the deployment configuration and verify the application.

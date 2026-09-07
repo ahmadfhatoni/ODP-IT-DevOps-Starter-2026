@@ -5,7 +5,8 @@ on:
   
   push:
     branches:
-      - feat/fallback-fe-mobile
+      - main
+      - chore/workshop-ready-2026-09-09
     paths:
       - "apps/frontend/**"
       - "compose/**"
@@ -17,7 +18,7 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Start backend + DB + fallback web
         run: docker compose -f compose/docker-compose.full-demo.yml up -d --build
       - name: Wait and run banking smoke test
@@ -31,5 +32,3 @@ jobs:
       - name: Frontend logs on failure
         if: failure()
         run: docker compose -f compose/docker-compose.full-demo.yml logs frontend --tail=100
-
-# Trigger full-stack rehearsal

@@ -197,7 +197,7 @@ Perform:
 ### Runtime check
 
 ```text
-GET /health
+GET /api/v1/health
 ```
 
 ### Business smoke test
@@ -259,7 +259,7 @@ Each group shows:
 3. successful CI run;
 4. deployable artifact/container;
 5. running deployment;
-6. `/health`;
+6. `/api/v1/health`;
 7. one business API smoke-test path;
 8. logs/troubleshooting evidence; and
 9. one issue encountered and how it was resolved.

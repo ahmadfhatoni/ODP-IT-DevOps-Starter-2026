@@ -11,7 +11,7 @@
 - CI/CD and Docker demonstration using the shared JakOne example
 - Apply CI/CD to each group's existing project
 - Containerize/package and deploy the prototype
-- Verify `/health` and shared account/mutation API scenarios
+- Verify `/api/v1/health` and shared account/mutation API scenarios
 - Troubleshoot a controlled deployment problem
 
 ## Output
