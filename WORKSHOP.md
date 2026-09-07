@@ -143,6 +143,8 @@ Keep real secrets out of Git.
 
 Document safe placeholders in `.env.example`.
 
+If ports 8080 or 3000 are already in use, change BACKEND_HOST_PORT or FRONTEND_HOST_PORT in .env. Do not stop unrelated applications unless you know they are safe to stop.
+
 ---
 
 ## Activity 7 — Compose the Runtime

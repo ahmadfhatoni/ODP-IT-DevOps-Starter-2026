@@ -64,3 +64,7 @@ java --version
 - Production deployment automation
 
 These are developed during Day 7.
+
+##Notes
+
+If ports 8080 or 3000 are already in use, change BACKEND_HOST_PORT or FRONTEND_HOST_PORT in .env. Do not stop unrelated applications unless you know they are safe to stop.
