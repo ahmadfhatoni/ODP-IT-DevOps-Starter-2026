@@ -6,8 +6,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-bank_dki_db}
       POSTGRES_USER: ${POSTGRES_USER:-dev_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password}
-    ports:
-      - "5432:5432"
     volumes:
       - odp_pgdata:/var/lib/postgresql/data
       - ../shared-contract/db:/docker-entrypoint-initdb.d:ro
@@ -19,11 +17,11 @@ services:
     networks: [odp-network]
 
   backend:
-    image: ${BACKEND_IMAGE:-bagzmate/jakone-be}:${JAKONE_VERSION:-day7-2026-09-09}
+    image: ${BACKEND_IMAGE:-bagzmate/jakone-be}:${JAKONE_VERSION:-day7-2026-09-09-v2}
     container_name: odp-jakone-backend
     pull_policy: always
     ports:
-      - "8080:8080"
+      - "${BACKEND_HOST_PORT:-8080}:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-bank_dki_db}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-dev_user}
@@ -38,7 +36,7 @@ services:
       context: ../apps/frontend
     container_name: odp-jakone-frontend
     ports:
-      - "3000:80"
+      - "${FRONTEND_HOST_PORT:-3000}:80"
     depends_on:
       - backend
     networks: [odp-network]

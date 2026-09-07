@@ -96,3 +96,7 @@ The shared API examples and database concepts are aligned to Pak Susanto's Backe
 **CI/CD is a software-delivery practice. Docker is one possible implementation technology within that practice.**
 
 The included `sample-app/` is a **DevOps fallback/mock** that follows the shared endpoint names. The preferred workshop target remains the actual group project produced during the earlier modules.
+
+## additional notes
+
+If ports 8080 or 3000 are already in use, change BACKEND_HOST_PORT or FRONTEND_HOST_PORT in .env. Do not stop unrelated applications unless you know they are safe to stop.
